@@ -57,7 +57,12 @@ public class PlayerService {
 		if (!containsId(id)) {
 			throw new PlayerNotRegisteredException("Cannot log out: Player is not registered");
 		}
-		repository.delete(getPlayer(id));
+		Player player = getPlayer(id);
+		if (player.inGame()) {
+			player.getCurrentGame().removePlayer(id);
+		}
+		repository.delete(player);
+		System.out.println("Logged out player: " + player);
 	}
 
 	public void joinGame(String playerId, String gameId) {

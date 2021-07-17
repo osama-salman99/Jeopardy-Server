@@ -69,4 +69,20 @@ public class Game {
 	private void cleanUp() {
 		players.remove(players.stream().filter(this::isHost).findFirst().orElse(null));
 	}
+
+	public void removePlayer(String id) {
+		Player player = getPlayer(id);
+		if (player == null) {
+			System.out.println("Warning: Could not remove player from game: " +
+					"Player with id '" + id + "' is not in game '" + this.id + "'");
+			return;
+		}
+		player.freeGame();
+		players.remove(player);
+		// TODO: Remove player
+	}
+
+	private Player getPlayer(String id) {
+		return players.stream().filter(player -> player.getId().equals(id)).findFirst().orElse(null);
+	}
 }

@@ -38,6 +38,10 @@ public class Player {
 		game.addPlayer(this);
 	}
 
+	public void freeGame() {
+		setCurrentGame(null);
+	}
+
 	@Override
 	public boolean equals(Object object) {
 		if (!(object instanceof Player)) {
