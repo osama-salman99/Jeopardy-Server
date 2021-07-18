@@ -11,13 +11,17 @@ import java.util.List;
 
 @Service
 public class PlayerService {
-	private final PlayerRepository repository;
-	private final GameService gameService;
+	private PlayerRepository repository;
+	private GameService gameService;
 
 	@Autowired
-	public PlayerService(PlayerRepository repository, GameService gameService) {
-		this.repository = repository;
+	public void setGameService(GameService gameService) {
 		this.gameService = gameService;
+	}
+
+	@Autowired
+	public void setRepository(PlayerRepository repository) {
+		this.repository = repository;
 	}
 
 	public boolean containsNickname(String nickname) {

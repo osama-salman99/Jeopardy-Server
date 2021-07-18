@@ -12,10 +12,16 @@ import java.util.List;
 
 @Service
 public class GameService {
-	private final GameRepository repository;
+	private GameRepository repository;
+	private PlayerService playerService;
 
 	@Autowired
-	public GameService(GameRepository repository) {
+	public void setPlayerService(PlayerService playerService) {
+		this.playerService = playerService;
+	}
+
+	@Autowired
+	public void setRepository(GameRepository repository) {
 		this.repository = repository;
 	}
 
@@ -49,5 +55,10 @@ public class GameService {
 
 	private boolean validGameId(String gameId) {
 		return gameId.matches("^[a-zA-Z0-9]*$");
+	}
+
+	public boolean isHost(String playerId) {
+		Player player = playerService.getPlayer(playerId);
+		return player != null && player.inGame() && player.getCurrentGame().isHost(player);
 	}
 }
