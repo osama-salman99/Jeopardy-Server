@@ -72,4 +72,13 @@ public class GameService {
 		game.setFirstBoard(board);
 		save(game);
 	}
+
+	public void setSecondBoard(String gameId, Board board) {
+		if (!containsId(gameId)) {
+			throw new GameNotFoundException("Cannot set second board: There is no game with the id: " + gameId);
+		}
+		Game game = getGame(gameId);
+		game.setSecondBoard(board);
+		save(game);
+	}
 }

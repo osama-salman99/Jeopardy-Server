@@ -11,7 +11,7 @@ public class GameConfiguration {
 	@Bean
 	public CommandLineRunner initialGame(GameService gameService) {
 		return args -> {
-			// Load file then add it to database
+			
 		};
 	}
 }

@@ -26,7 +26,7 @@ public class Category {
 			generator = "category_sequence"
 	)
 	private Long id;
-	private String categoryName;
+	private String name;
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Board board;
 	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
@@ -35,16 +35,16 @@ public class Category {
 	public Category() {
 	}
 
-	public Category(String categoryName) {
-		this.categoryName = categoryName;
+	public Category(String name) {
+		this.name = name;
 		this.cells = new ArrayList<>();
 	}
 
-	public void addCell(String question) {
+	public void addCell(String question, Integer value) {
 		if (cells.size() >= 5) {
 			throw new CategoryFullException("Cannot add cell: category is already full (size = " + cells.size() + ")");
 		}
-		cells.add(new Cell(this, question));
+		cells.add(new Cell(this, question, value));
 	}
 
 	@Override
@@ -59,7 +59,7 @@ public class Category {
 		}
 		stringBuilder.append("}");
 		return "Category{" +
-				"categoryName='" + categoryName + '\'' +
+				"categoryName='" + name + '\'' +
 				"cells=" + stringBuilder +
 				'}';
 	}

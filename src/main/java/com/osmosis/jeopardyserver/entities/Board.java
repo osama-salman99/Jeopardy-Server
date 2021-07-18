@@ -49,7 +49,7 @@ public class Board {
 		for (Category category : categories) {
 			stringBuilder.append(prefix);
 			prefix = ", ";
-			stringBuilder.append('\'').append(categories).append('\'');
+			stringBuilder.append('\'').append(category).append('\'');
 		}
 		stringBuilder.append("}");
 		return "Board{" +

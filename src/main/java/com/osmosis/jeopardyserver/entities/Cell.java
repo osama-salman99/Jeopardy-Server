@@ -26,14 +26,16 @@ public class Cell {
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Category category;
 	private String question;
+	private Integer value;
 
 	public Cell() {
 
 	}
 
-	Cell(Category category, String question) {
+	Cell(Category category, String question, Integer value) {
 		this.category = category;
 		this.question = question;
+		this.value = value;
 	}
 
 	@Override
