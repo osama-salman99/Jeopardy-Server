@@ -1,7 +1,9 @@
 package com.osmosis.jeopardyserver.services;
 
+import com.osmosis.jeopardyserver.entities.Board;
 import com.osmosis.jeopardyserver.entities.Game;
 import com.osmosis.jeopardyserver.entities.Player;
+import com.osmosis.jeopardyserver.exceptions.GameIdTakenException;
 import com.osmosis.jeopardyserver.exceptions.GameNotFoundException;
 import com.osmosis.jeopardyserver.exceptions.InvalidGameIdException;
 import com.osmosis.jeopardyserver.repositories.GameRepository;
@@ -43,7 +45,7 @@ public class GameService {
 
 	public void createGame(String gameId, Player host) {
 		if (containsId(gameId)) {
-			throw new GameNotFoundException("Cannot create game: Another game already exists with the id: " + gameId);
+			throw new GameIdTakenException("Cannot create game: Another game already exists with the id: " + gameId);
 		}
 		if (!validGameId(gameId)) {
 			throw new InvalidGameIdException("Cannot create game: Invalid game id");
@@ -60,5 +62,14 @@ public class GameService {
 	public boolean isHost(String playerId) {
 		Player player = playerService.getPlayer(playerId);
 		return player != null && player.inGame() && player.getCurrentGame().isHost(player);
+	}
+
+	public void setFirstBoard(String gameId, Board board) {
+		if (!containsId(gameId)) {
+			throw new GameNotFoundException("Cannot set first board: There is no game with the id: " + gameId);
+		}
+		Game game = getGame(gameId);
+		game.setFirstBoard(board);
+		save(game);
 	}
 }

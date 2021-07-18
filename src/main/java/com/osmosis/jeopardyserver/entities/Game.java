@@ -9,7 +9,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 @Entity
-@Table
+@javax.persistence.Table
 @Getter
 @Setter
 public class Game {
@@ -20,6 +20,10 @@ public class Game {
 	private Collection<Player> players;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Player host;
+	@OneToOne(cascade = CascadeType.ALL)
+	private Board firstBoard;
+	@OneToOne(cascade = CascadeType.ALL)
+	private Board secondBoard;
 
 	public Game() {
 
@@ -47,6 +51,22 @@ public class Game {
 		return players.stream().anyMatch(player -> playerId.equals(player.getId()));
 	}
 
+	public void removePlayer(String id) {
+		Player player = getPlayer(id);
+		if (player == null) {
+			System.out.println("Warning: Could not remove player from game: " +
+					"Player with id '" + id + "' is not in game '" + this.id + "'");
+			return;
+		}
+		player.freeGame();
+		players.remove(player);
+		// TODO: Broadcast remove player
+	}
+
+	private Player getPlayer(String id) {
+		return players.stream().filter(player -> player.getId().equals(id)).findFirst().orElse(null);
+	}
+
 	@Override
 	public String toString() {
 		StringBuilder stringBuilder = new StringBuilder();
@@ -62,27 +82,13 @@ public class Game {
 				"id='" + id + '\'' +
 				", host='" + host.getNickname() + '\'' +
 				", players=" + stringBuilder +
+				", first board=" + firstBoard +
+				", second board=" + secondBoard +
 				'}';
 	}
 
 	@PostLoad
 	private void cleanUp() {
 		players.remove(players.stream().filter(this::isHost).findFirst().orElse(null));
-	}
-
-	public void removePlayer(String id) {
-		Player player = getPlayer(id);
-		if (player == null) {
-			System.out.println("Warning: Could not remove player from game: " +
-					"Player with id '" + id + "' is not in game '" + this.id + "'");
-			return;
-		}
-		player.freeGame();
-		players.remove(player);
-		// TODO: Remove player
-	}
-
-	private Player getPlayer(String id) {
-		return players.stream().filter(player -> player.getId().equals(id)).findFirst().orElse(null);
 	}
 }

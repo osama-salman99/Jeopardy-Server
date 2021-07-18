@@ -94,4 +94,15 @@ public class PlayerService {
 		}
 		gameService.createGame(gameId, player);
 	}
+
+	public String getHostedGameInfo(String playerId) {
+		if (!containsId(playerId)) {
+			throw new PlayerNotRegisteredException("Cannot fetch game info: Player is not registered");
+		}
+		if (!gameService.isHost(playerId)) {
+			throw new PlayerNotHostException("Cannot fetch game info: Player is not host exception");
+		}
+		Player player = getPlayer(playerId);
+		return player.getCurrentGame().toString();
+	}
 }

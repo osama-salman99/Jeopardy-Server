@@ -14,7 +14,7 @@ import java.util.List;
 public class WebConfiguration {
 
 	@Bean
-	public CommandLineRunner commandLineRunner(PlayerService playerService, GameService gameService) {
+	public CommandLineRunner initialWeb(PlayerService playerService, GameService gameService) {
 		return args -> {
 			System.out.println("{");
 

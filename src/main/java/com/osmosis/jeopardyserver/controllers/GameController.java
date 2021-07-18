@@ -27,4 +27,9 @@ public class GameController {
 	public boolean isHost(HttpServletRequest request) {
 		return gameService.isHost(request.getSession().getId());
 	}
+
+	@GetMapping("/host/info")
+	public String info(HttpServletRequest request) {
+		return playerService.getHostedGameInfo(request.getSession().getId());
+	}
 }
