@@ -33,6 +33,11 @@ public class GameController {
 		return playerService.getHostedGameInfo(request.getSession().getId());
 	}
 
+	@GetMapping("/host/is-ready")
+	public boolean isReady(HttpServletRequest request) {
+		return gameService.isReady(request.getSession().getId());
+	}
+
 	@SneakyThrows
 	@PostMapping(
 			path = "/host/upload-file",

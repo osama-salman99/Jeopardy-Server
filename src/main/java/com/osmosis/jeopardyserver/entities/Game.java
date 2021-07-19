@@ -91,4 +91,8 @@ public class Game {
 	private void cleanUp() {
 		players.remove(players.stream().filter(this::isHost).findFirst().orElse(null));
 	}
+
+	public boolean isReady() {
+		return firstBoard != null && secondBoard != null;
+	}
 }

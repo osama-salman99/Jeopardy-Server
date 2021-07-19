@@ -66,14 +66,22 @@ public class GameService {
 		return player != null && player.inGame() && player.getCurrentGame().isHost(player);
 	}
 
-	public void setBoards(String playerId, MultipartFile file) throws IOException {
-		if (!isHost(playerId)) {
-			throw new PlayerNotHostException("Cannot set boards: Player is not a host of any game");
-		}
+	public void setBoards(String hostId, MultipartFile file) throws IOException {
+		Game game = getHostedGame(hostId);
 		BoardParser parser = new BoardParser(file.getInputStream());
 		parser.parse();
-		Game game = playerService.getPlayer(playerId).getCurrentGame();
 		game.setFirstBoard(parser.getFirstBoard());
 		game.setSecondBoard(parser.getSecondBoard());
+	}
+
+	public Game getHostedGame(String hostId) {
+		if (!isHost(hostId)) {
+			throw new PlayerNotHostException("Cannot retrieve game: Player is not a host of any game");
+		}
+		return playerService.getPlayer(hostId).getCurrentGame();
+	}
+
+	public boolean isReady(String hostId) {
+		return getHostedGame(hostId).isReady();
 	}
 }
