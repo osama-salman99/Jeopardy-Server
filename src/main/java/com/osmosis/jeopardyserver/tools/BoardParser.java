@@ -10,39 +10,42 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BoardParser {
+	private static final int NUMBER_OF_BOARDS = 2;
 	private final Scanner scanner;
 	private final List<Board> boards;
 	private boolean parsed;
 
 	public BoardParser(InputStream inputStream) {
 		this.scanner = new Scanner(inputStream);
-		this.boards = new ArrayList<>(2);
+		this.boards = new ArrayList<>(NUMBER_OF_BOARDS);
 		this.parsed = false;
 	}
 
 	public void parse() {
 		try {
-			Board board = new Board();
-			for (int categoryNumber = 0; categoryNumber < 6; categoryNumber++) {
-				if (!scanner.hasNextLine()) {
-					throw new FileFormatException("Invalid number of categories");
-				}
-				Category category = new Category(scanner.nextLine());
-				for (int cellNumber = 0; cellNumber < 5; cellNumber++) {
+			for (int i = 0; i < NUMBER_OF_BOARDS; i++) {
+				Board board = new Board();
+				for (int categoryNumber = 0; categoryNumber < 6; categoryNumber++) {
 					if (!scanner.hasNextLine()) {
-						throw new FileFormatException("Invalid number of cells (questions)");
+						throw new FileFormatException("Invalid number of categories");
 					}
-					String[] line = scanner.nextLine().split("\t");
-					if (line.length != 2) {
-						throw new FileFormatException("Cell must contain value and question separated by a tab");
+					Category category = new Category(scanner.nextLine());
+					for (int cellNumber = 0; cellNumber < 5; cellNumber++) {
+						if (!scanner.hasNextLine()) {
+							throw new FileFormatException("Invalid number of cells (questions)");
+						}
+						String[] line = scanner.nextLine().split("\t");
+						if (line.length != 2) {
+							throw new FileFormatException("Cell must contain value and question separated by a tab");
+						}
+						Integer value = Integer.parseInt(line[0]);
+						String question = line[1];
+						category.addCell(question, value);
 					}
-					Integer value = Integer.parseInt(line[0]);
-					String question = line[1];
-					category.addCell(question, value);
+					board.addCategory(category);
 				}
-				board.addCategory(category);
+				boards.add(board);
 			}
-			boards.add(board);
 		} catch (Exception exception) {
 			throw new FileFormatException("File not formatted properly: " + exception.getMessage());
 		}
