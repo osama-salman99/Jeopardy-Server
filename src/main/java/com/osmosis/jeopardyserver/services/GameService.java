@@ -1,15 +1,17 @@
 package com.osmosis.jeopardyserver.services;
 
-import com.osmosis.jeopardyserver.entities.Board;
 import com.osmosis.jeopardyserver.entities.Game;
 import com.osmosis.jeopardyserver.entities.Player;
 import com.osmosis.jeopardyserver.exceptions.GameIdTakenException;
-import com.osmosis.jeopardyserver.exceptions.GameNotFoundException;
 import com.osmosis.jeopardyserver.exceptions.InvalidGameIdException;
+import com.osmosis.jeopardyserver.exceptions.PlayerNotHostException;
 import com.osmosis.jeopardyserver.repositories.GameRepository;
+import com.osmosis.jeopardyserver.tools.BoardParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -64,21 +66,14 @@ public class GameService {
 		return player != null && player.inGame() && player.getCurrentGame().isHost(player);
 	}
 
-	public void setFirstBoard(String gameId, Board board) {
-		if (!containsId(gameId)) {
-			throw new GameNotFoundException("Cannot set first board: There is no game with the id: " + gameId);
+	public void setBoards(String playerId, MultipartFile file) throws IOException {
+		if (!isHost(playerId)) {
+			throw new PlayerNotHostException("Cannot set boards: Player is not a host of any game");
 		}
-		Game game = getGame(gameId);
-		game.setFirstBoard(board);
-		save(game);
-	}
-
-	public void setSecondBoard(String gameId, Board board) {
-		if (!containsId(gameId)) {
-			throw new GameNotFoundException("Cannot set second board: There is no game with the id: " + gameId);
-		}
-		Game game = getGame(gameId);
-		game.setSecondBoard(board);
-		save(game);
+		BoardParser parser = new BoardParser(file.getInputStream());
+		parser.parse();
+		Game game = playerService.getPlayer(playerId).getCurrentGame();
+		game.setFirstBoard(parser.getFirstBoard());
+		game.setSecondBoard(parser.getSecondBoard());
 	}
 }

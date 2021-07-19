@@ -2,11 +2,11 @@ package com.osmosis.jeopardyserver.controllers;
 
 import com.osmosis.jeopardyserver.services.GameService;
 import com.osmosis.jeopardyserver.services.PlayerService;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -23,7 +23,7 @@ public class GameController {
 		this.gameService = gameService;
 	}
 
-	@GetMapping("/is-host")
+	@GetMapping("host/is-host")
 	public boolean isHost(HttpServletRequest request) {
 		return gameService.isHost(request.getSession().getId());
 	}
@@ -31,5 +31,16 @@ public class GameController {
 	@GetMapping("/host/info")
 	public String info(HttpServletRequest request) {
 		return playerService.getHostedGameInfo(request.getSession().getId());
+	}
+
+	@SneakyThrows
+	@PostMapping(
+			path = "/host/upload-file",
+			consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE
+	)
+	public String uploadFile(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
+		gameService.setBoards(request.getSession().getId(), file);
+		return "accepted";
 	}
 }
