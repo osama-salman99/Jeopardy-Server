@@ -2,6 +2,7 @@ package com.osmosis.jeopardyserver.entities;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.CascadeType;
@@ -12,6 +13,7 @@ import javax.persistence.ManyToOne;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Player {
 	@Id
 	@Setter(AccessLevel.NONE)
@@ -19,10 +21,6 @@ public class Player {
 	private String nickname;
 	@ManyToOne(cascade = CascadeType.ALL)
 	private Game currentGame;
-
-	public Player() {
-
-	}
 
 	public Player(String id, String nickname) {
 		this.id = id;

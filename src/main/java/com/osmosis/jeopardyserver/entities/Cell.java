@@ -2,14 +2,15 @@ package com.osmosis.jeopardyserver.entities;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 
-@Table
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Cell {
 	@Id
 	@Setter(AccessLevel.NONE)
@@ -27,10 +28,6 @@ public class Cell {
 	private Category category;
 	private String question;
 	private Integer value;
-
-	public Cell() {
-
-	}
 
 	Cell(Category category, String question, Integer value) {
 		this.category = category;

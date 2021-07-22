@@ -3,16 +3,17 @@ package com.osmosis.jeopardyserver.entities;
 import com.osmosis.jeopardyserver.exceptions.CategoryFullException;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
-@Table
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class Category {
 	@Id
 	@Setter(AccessLevel.NONE)
@@ -31,9 +32,6 @@ public class Category {
 	private Board board;
 	@OneToMany(mappedBy = "category", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	private Collection<Cell> cells;
-
-	public Category() {
-	}
 
 	public Category(String name) {
 		this.name = name;

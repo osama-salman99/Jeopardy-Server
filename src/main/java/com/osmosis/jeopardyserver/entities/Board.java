@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 @Entity
-@Table
 @Getter
 @Setter
 public class Board {

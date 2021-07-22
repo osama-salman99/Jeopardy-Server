@@ -2,6 +2,7 @@ package com.osmosis.jeopardyserver.entities;
 
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,9 +10,9 @@ import java.util.Collection;
 import java.util.HashSet;
 
 @Entity
-@javax.persistence.Table
 @Getter
 @Setter
+@NoArgsConstructor
 public class Game {
 	@Id
 	@Setter(AccessLevel.NONE)
@@ -24,10 +25,6 @@ public class Game {
 	private Board firstBoard;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Board secondBoard;
-
-	public Game() {
-
-	}
 
 	public Game(String id, Player host) {
 		this.id = id;

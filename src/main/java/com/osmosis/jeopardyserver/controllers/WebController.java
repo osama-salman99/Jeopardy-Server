@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-@CrossOrigin(origins = {"http://localhost:3000", "http://94.249.55.31:3000/"}, allowedHeaders = "*", allowCredentials = "true")
 @RequestMapping("/")
 public class WebController {
 	private final PlayerService playerService;

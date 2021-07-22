@@ -7,10 +7,12 @@ import com.osmosis.jeopardyserver.services.PlayerService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import java.util.List;
 
 @Configuration
+@EnableWebMvc
 public class WebConfiguration {
 
 	@Bean
