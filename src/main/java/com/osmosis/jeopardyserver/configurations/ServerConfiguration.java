@@ -1,6 +1,5 @@
 package com.osmosis.jeopardyserver.configurations;
 
-import lombok.var;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -31,10 +30,10 @@ public class ServerConfiguration {
 	}
 
 	private Connector getHttpConnector() {
-		var connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
+		Connector connector = new Connector(TomcatServletWebServerFactory.DEFAULT_PROTOCOL);
 		connector.setScheme("http");
 		connector.setPort(8080);
-		connector.setSecure(false);
+		connector.setSecure(true);
 		connector.setRedirectPort(8443);
 		return connector;
 	}

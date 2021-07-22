@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebSocketController {
 
 	@MessageMapping("/sub")
-	@SendTo("/topic/test")
-	public String subscribe() {
+	@SendTo("/topics/test/")
+	public String subscribe(String message) {
+		System.out.println("Received: " + message);
 		return "subscribed";
 	}
 }
