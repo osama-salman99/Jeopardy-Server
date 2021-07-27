@@ -25,7 +25,7 @@ public class PlayerService {
 	}
 
 	public boolean containsNickname(String nickname) {
-		return !repository.findPlayerByNickname(nickname).isEmpty();
+		return repository.findPlayerByNickname(nickname).isPresent();
 	}
 
 	public boolean containsId(String id) {
@@ -104,5 +104,18 @@ public class PlayerService {
 		}
 		Player player = getPlayer(playerId);
 		return player.getCurrentGame().toString();
+	}
+
+	public String getPlayerId(String nickname) {
+		return repository.findPlayerByNickname(nickname).orElseThrow(() -> {
+			throw new PlayerNotFoundException("Player with nickname '" + nickname + "' does not exist");
+		}).getId();
+	}
+
+	public void perform(String id, String event) {
+		if (!containsId(id)) {
+			throw new PlayerNotRegisteredException("Cannot perform event: Player is not registered");
+		}
+		// TODO: Consider the command pattern
 	}
 }
