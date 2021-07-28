@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 @Service
 public class PlayerService {
@@ -107,9 +108,9 @@ public class PlayerService {
 	}
 
 	public String getPlayerId(String nickname) {
-		return repository.findPlayerByNickname(nickname).orElseThrow(() -> {
-			throw new PlayerNotFoundException("Player with nickname '" + nickname + "' does not exist");
-		}).getId();
+		return repository.findPlayerByNickname(nickname).orElseThrow(() ->
+				new PlayerNotFoundException("Player with nickname '" + nickname + "' does not exist")
+		).getId();
 	}
 
 	public void perform(String id, String event) {
